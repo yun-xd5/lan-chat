@@ -1,22 +1,16 @@
 /** @jsx h */
 import { h } from "preact";
-import { InputBox } from "~/components/InputBox.tsx";
-import Counter from "~/islands/Counter.tsx";
+import InputBox from "../islands/InputBox.tsx";
 
 export default function Home() {
   return (
     <div>
-      <img
-        src="/logo.svg"
-        height="100px"
-        alt="the fresh logo: a sliced lemon dripping with juice"
-      />
-      <p>
-        Welcome to `fresh`. Try updating this message in the ./routes/index.tsx
-        file, and refresh.
-      </p>
+      <div
+        id="view"
+        style={{ position: "absolute", top: "50%", left: "50%" }}
+      >
+      </div>
       <InputBox />
-      <Counter start={3} />
     </div>
   );
 }
