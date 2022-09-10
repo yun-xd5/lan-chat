@@ -1,80 +1,88 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
-import InputBox from "/islands/InputBox.tsx";
 import { ChatData } from "/components/ChatData.ts";
 import { getLogger } from "/logger.ts";
-import Counter from "../islands/Counter.tsx";
 
 const log = getLogger("");
 
-// export const handler: Handlers<ChatData[]> = {
-export const handler: Handlers = {
-  GET(_, ctx) {
-    const lst: ChatData[] = [
-      {
-        name: "nemo",
-        comment: "test",
-      },
-      {
-        name: "nemo",
-        comment: "test",
-      },
-      {
-        name: "nemo",
-        comment: "test",
-      },
-    ];
-    return ctx.render(lst);
-  },
+interface Data {
+  lst: ChatData[];
+  name: string;
+}
 
+const data: Data = {
+  name: "お名前",
+  lst: [],
+};
+// export const handler: Handlers<ChatData[]> = {
+export const handler: Handlers<Data> = {
+  GET(_, ctx) {
+    log.debug("GET");
+    return ctx.render(data);
+  },
   async POST(req, ctx) {
+    log.debug("POST");
     // フォームデータの入力値を取得
     const formData = await req.formData();
-    log.debug(formData);
-    log.debug(ctx);
-    const name = formData.get("name")?.toString();
-    const comment = formData.get("comment")?.toString();
-
-    // トップページにリダイレクト
-    return new Response("", {
-      status: 303,
-      headers: {
-        Location: "/",
-      },
-    });
+    const row = {
+      name: formData.get("name")?.toString(),
+      comment: formData.get("comment")?.toString(),
+      postTime: new Date(),
+    };
+    data.name = row.name ?? "";
+    log.debug(row);
+    data.lst.push(row);
+    return ctx.render(data);
   },
 };
 
-// export const handler2: Handlers<ChatData> = {
-//   async POST(req, ctx) {
-//     // フォームデータの入力値を取得
-//     const formData = await req.formData();
-//     const name = formData.get("name")?.toString();
-//     const comment = formData.get("comment")?.toString();
+export default ({ data }: PageProps<Data>) => {
+  const toDate = (d: Date) => {
+    const logTime = d.toISOString().slice(0, -5) +
+      d.toString().replace(/^.*GMT([-+]\d{2})(\d{2}).*$/, "$1:$2");
+    return logTime.replace("+09:00", "");
+  };
+  log.debug(data);
 
-//     // トップページにリダイレクト
-//     return new Response("", {
-//       status: 303,
-//       headers: {
-//         Location: "/",
-//       },
-//     });
-//   },
-// };
-
-export default function Home({ data }: PageProps<ChatData[]>) {
   return (
     <div>
       <div id="view">
-        <ul>
-          {data.map((chat) => (
-            <li key={chat.name}>
-              {chat.comment}
-            </li>
-          ))}
-        </ul>
+        {data?.lst.map((chat) => (
+          <div>
+            <div>
+              {`${chat.name} `}
+              <span style={{ "font-size": "small" }}>
+                {toDate(chat.postTime)}
+              </span>
+            </div>
+
+            <div style={{ "text-indent": "1em" }}>{chat.comment}</div>
+          </div>
+        ))}
       </div>
-      <InputBox />
-      <Counter start={3} />
+      <div
+        style={{
+          position: "absolute",
+          top: "90%",
+          width: "90%",
+          "text-align": "right",
+        }}
+      >
+        <form method="POST">
+          <input type="text" name="name" value={data?.name ?? "お名前"} />
+          <input type="text" name="comment" style={{ width: "70%" }} />{" "}
+          <button
+            type="submit"
+            style={{
+              "text-align": "right",
+              // display: "grid",
+              // "justify-content": "flex-end",
+            }}
+          >
+            送信
+          </button>
+        </form>
+      </div>
+      {/* <InputBox /> */}
     </div>
   );
-}
+};
