@@ -14,6 +14,7 @@
             "runtimeArgs": [
                 "run",
                 "--inspect",
+                // "--inspect-brk",
                 "--allow-all",
                 // "--watch=static/,routes/ dev.ts"
             ],

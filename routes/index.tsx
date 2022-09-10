@@ -1,6 +1,6 @@
 /** @jsx h */
 import { h } from "preact";
-import InputBox from "../islands/InputBox.tsx";
+import InputBox from "/islands/InputBox.tsx";
 
 export default function Home() {
   return (

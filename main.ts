@@ -6,4 +6,8 @@
 
 import { start } from "$fresh/server.ts";
 import manifest from "./fresh.gen.ts";
+import { getLogger } from "./logger.ts";
+const log = getLogger("");
+log.debug("chat-log start");
+
 await start(manifest);
