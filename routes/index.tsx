@@ -1,13 +1,13 @@
-/** @jsx h */
 import { Handlers, PageProps } from "$fresh/server.ts";
-import { h } from "preact";
 import InputBox from "/islands/InputBox.tsx";
 import { ChatData } from "/components/ChatData.ts";
 import { getLogger } from "/logger.ts";
+import Counter from "../islands/Counter.tsx";
 
 const log = getLogger("");
 
-export const handler: Handlers<ChatData[]> = { // ②
+// export const handler: Handlers<ChatData[]> = {
+export const handler: Handlers = {
   GET(_, ctx) {
     const lst: ChatData[] = [
       {
@@ -30,6 +30,7 @@ export const handler: Handlers<ChatData[]> = { // ②
     // フォームデータの入力値を取得
     const formData = await req.formData();
     log.debug(formData);
+    log.debug(ctx);
     const name = formData.get("name")?.toString();
     const comment = formData.get("comment")?.toString();
 
@@ -73,6 +74,7 @@ export default function Home({ data }: PageProps<ChatData[]>) {
         </ul>
       </div>
       <InputBox />
+      <Counter start={3} />
     </div>
   );
 }

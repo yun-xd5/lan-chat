@@ -1,6 +1,4 @@
-/** @jsx h */
 import { Handlers } from "$fresh/server.ts";
-import { h } from "preact";
 import { ChatData } from "/components/ChatData.ts";
 
 export default function InputBox() {
@@ -36,6 +34,7 @@ export default function InputBox() {
           }}
         />{" "}
         <button
+          type="submit"
           style={{
             "text-align": "right",
             // display: "grid",
