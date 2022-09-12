@@ -1,4 +1,5 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
+import InputBox from "/islands/InputBox.tsx";
 import { ChatData } from "/components/ChatData.ts";
 import { getLogger } from "/logger.ts";
 
@@ -31,7 +32,13 @@ export const handler: Handlers<Data> = {
     data.name = row.name ?? "";
     log.debug(row);
     data.lst.push(row);
-    return ctx.render(data);
+    // トップページにリダイレクト
+    return new Response("", {
+      status: 303,
+      headers: {
+        Location: "/",
+      },
+    });
   },
 };
 
@@ -59,30 +66,7 @@ export default ({ data }: PageProps<Data>) => {
           </div>
         ))}
       </div>
-      <div
-        style={{
-          position: "absolute",
-          top: "90%",
-          width: "90%",
-          "text-align": "right",
-        }}
-      >
-        <form method="POST">
-          <input type="text" name="name" value={data?.name ?? "お名前"} />
-          <input type="text" name="comment" style={{ width: "70%" }} />{" "}
-          <button
-            type="submit"
-            style={{
-              "text-align": "right",
-              // display: "grid",
-              // "justify-content": "flex-end",
-            }}
-          >
-            送信
-          </button>
-        </form>
-      </div>
-      {/* <InputBox /> */}
+      <InputBox />
     </div>
   );
 };
