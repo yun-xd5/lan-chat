@@ -4,20 +4,26 @@
 
 import config from "./deno.json" assert { type: "json" };
 import * as $0 from "./routes/[name].tsx";
-import * as $1 from "./routes/api/joke.ts";
-import * as $2 from "./routes/index.tsx";
-import * as $$0 from "./islands/Counter.tsx";
-import * as $$1 from "./islands/InputBox.tsx";
+import * as $1 from "./routes/api/entry.ts";
+import * as $2 from "./routes/api/joke.ts";
+import * as $3 from "./routes/index.tsx";
+import * as $$0 from "./islands/ChatProvider.tsx";
+import * as $$1 from "./islands/Counter.tsx";
+import * as $$2 from "./islands/InputBox.tsx";
+import * as $$3 from "./islands/WebSocket.ts";
 
 const manifest = {
   routes: {
     "./routes/[name].tsx": $0,
-    "./routes/api/joke.ts": $1,
-    "./routes/index.tsx": $2,
+    "./routes/api/entry.ts": $1,
+    "./routes/api/joke.ts": $2,
+    "./routes/index.tsx": $3,
   },
   islands: {
-    "./islands/Counter.tsx": $$0,
-    "./islands/InputBox.tsx": $$1,
+    "./islands/ChatProvider.tsx": $$0,
+    "./islands/Counter.tsx": $$1,
+    "./islands/InputBox.tsx": $$2,
+    "./islands/WebSocket.ts": $$3,
   },
   baseUrl: import.meta.url,
   config,

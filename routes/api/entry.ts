@@ -1,7 +1,14 @@
-import { HandlerContext } from "$fresh/server.ts";
+import { Handlers } from "$fresh/server.ts";
+import { handleWebsocket } from "/utils/websocket.ts";
 
-export const handler = (_req: Request, _ctx: HandlerContext): Response => {
-  const socket = new WebSocket(`ws://localhost:8080/entry`);
+export const handler: Handlers = {
+  GET(req) {
+    if (req.headers.get("upgrade") === "websocket") {
+      const { response, socket } = Deno.upgradeWebSocket(req);
+      handleWebsocket(socket);
+      return response;
+    }
 
-  return socket;
+    return new Response();
+  },
 };
